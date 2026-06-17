@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Servicios</title>
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+
+<header>
+    <h1>Servicios</h1>
+
+    <nav>
+        <a href="inicio.html">Inicio</a>
+        <a href="citas.html">Citas</a>
+        <a href="contacto.html">Contacto</a>
+    </nav>
+</header>
+
+<main class="contenido">
+
+</section>
+<img src="img/logo.jpg" alt="Interior del taller mecánico">
+<section class="servicios">
+    <h2>Nuestros Servicios</h2>
+
+    <div class="lista">
+        <div class="item">🔧 Afinación desde cambios de anilo</div>
+        <div class="item">🛢️ Cambio de aceite</div>
+        <div class="item">⚙️ Diagnóstico</div>
+        <div class="item">🔋 Sistema eléctrico</div>
+    </div>
+</section>
+
+<section>
+    <h2>Calcula tu servicio</h2>
+
+    <select id="servicio">
+        <option value="">Selecciona un servicio</option>
+        <option value="aceite">Cambio de aceite</option>
+        <option value="frenos">Revisión de frenos</option>
+        <option value="motor">Reparación de motor</option>
+    </select>
+
+    <button onclick="calcularCosto()">Calcular costo</button>
+
+    <p id="resultado"></p>
+</section>
+
+</main>
+
+<footer>
+    <p>Galileo Garage</p>
+</footer>
+
+<script>
+function calcularCosto() {
+    let servicio = document.getElementById("servicio").value;
+    let costo = 0;
+
+    if (servicio === "aceite") {
+        costo = 500;
+    } else if (servicio === "frenos") {
+        costo = 1200;
+    } else if (servicio === "motor") {
+        costo = 3000;
+    } else {
+        document.getElementById("resultado").innerHTML = "Selecciona un servicio válido";
+        return;
+    }
+
+    document.getElementById("resultado").innerHTML = "Costo estimado: $" + costo;
+}
+</script>
+
+</body>
+</html>
