@@ -1,50 +1,43 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Galileo Garage</title>
-<link rel="stylesheet" href="css/estilos.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galileo Garage</title>
+    <link rel="stylesheet" href="css/estilos.css">
 </head>
-
 <body>
 
 <header>
     <h1>GALILEO GARAGE</h1>
     <p>Taller Mecánico Profesional</p>
-
     <nav>
         <a href="inicio.html">Inicio</a>
         <a href="servicios.html">Servicios</a>
-        <a href="citas.html">Citas</a>
+        <a href="index.html">Citas</a>
         <a href="contacto.html">Contacto</a>
     </nav>
 </header>
 
 <main>
+    <section class="hero">
+        <img src="img/logo.png" alt="Logo del taller Galileo Garage">
+        <h2>Tu auto en las mejores manos</h2>
+    </section>
 
-<section class="hero">
-    <img src="img/logo.png" alt="Logo del taller Galileo Garage">
-    <h2>Tu auto en las mejores manos</h2>
-</section>
+    <section class="contenido">
+        <p>Ofrecemos mantenimiento y reparación de autos con calidad, rapidez y buen precio.</p>
+    </section>
 
-<section class="contenido">
-    <p>
-        Ofrecemos mantenimiento y reparación de autos con calidad, rapidez y buen precio.
-    </p>
-</section>
-
-<section class="servicios">
-    <h2>Nuestros Servicios</h2>
-
-    <div class="lista">
-        <div class="item">🔧 Afinación</div>
-        <div class="item">🛢️ Cambio de aceite</div>
-        <div class="item">⚙️ Diagnóstico</div>
-        <div class="item">🔋 Sistema eléctrico</div>
-    </div>
-</section>
-
+    <section class="servicios">
+        <h2>Nuestros Servicios</h2>
+        <div class="lista">
+            <div class="item">🔧 Afinación</div>
+            <div class="item">🛢️ Cambio de aceite</div>
+            <div class="item">⚙️ Diagnóstico</div>
+            <div class="item">🔋 Sistema eléctrico</div>
+        </div>
+    </section>
 </main>
 
 <footer>
@@ -53,42 +46,30 @@
     <p>Correo: tallergalileo@gmail.com</p>
 </footer>
 
-<!-- 🔹 JAVASCRIPT AGREGADO -->
 <script>
-
-// 1. Mensaje al cargar la página
 window.onload = function() {
     console.log("Bienvenido a Galileo Garage");
 }
 
-// 2. Mostrar alerta al hacer clic en servicios
 let servicios = document.querySelectorAll(".item");
-
 servicios.forEach(function(servicio) {
     servicio.addEventListener("click", function() {
         alert("Seleccionaste: " + servicio.textContent);
     });
 });
 
-// 3. Cambiar color del título al pasar el mouse
 let titulo = document.querySelector("h1");
-
 titulo.addEventListener("mouseover", function() {
     titulo.style.color = "Grey";
 });
-
 titulo.addEventListener("mouseout", function() {
     titulo.style.color = "white";
 });
 
-// 4. Mostrar mensaje en el footer al hacer clic
 let footer = document.querySelector("footer");
-
 footer.addEventListener("click", function() {
     alert("Gracias por visitar Galileo Garage");
 });
-
 </script>
-
 </body>
 </html>
