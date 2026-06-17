@@ -1,79 +1,102 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Servicios</title>
-<link rel="stylesheet" href="css/estilos.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Cita - Galileo Garage</title>
+    <link rel="stylesheet" href="css/estilos.css">
 </head>
-
 <body>
 
 <header>
-    <h1>Servicios</h1>
-
+    <h1>Agendar Cita</h1>
     <nav>
         <a href="inicio.html">Inicio</a>
-        <a href="citas.html">Citas</a>
+        <a href="servicios.html">Servicios</a>
         <a href="contacto.html">Contacto</a>
     </nav>
 </header>
 
 <main class="contenido">
+    <section>
+        <h2>Agenda tu servicio</h2>
+        <form id="formCita">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" required>
 
-</section>
-<img src="img/logo.jpg" alt="Interior del taller mecánico">
-<section class="servicios">
-    <h2>Nuestros Servicios</h2>
+            <label for="telefono">Teléfono:</label>
+            <input type="tel" id="telefono" required>
 
-    <div class="lista">
-        <div class="item">🔧 Afinación desde cambios de anilo</div>
-        <div class="item">🛢️ Cambio de aceite</div>
-        <div class="item">⚙️ Diagnóstico</div>
-        <div class="item">🔋 Sistema eléctrico</div>
-    </div>
-</section>
+            <label for="fecha">Fecha:</label>
+            <input type="date" id="fecha" required>
 
-<section>
-    <h2>Calcula tu servicio</h2>
-
-    <select id="servicio">
-        <option value="">Selecciona un servicio</option>
-        <option value="aceite">Cambio de aceite</option>
-        <option value="frenos">Revisión de frenos</option>
-        <option value="motor">Reparación de motor</option>
-    </select>
-
-    <button onclick="calcularCosto()">Calcular costo</button>
-
-    <p id="resultado"></p>
-</section>
-
+            <button type="submit">Agendar Cita</button>
+        </form>
+        <p id="mensaje"></p>
+    </section>
 </main>
 
 <footer>
     <p>Galileo Garage</p>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-function calcularCosto() {
-    let servicio = document.getElementById("servicio").value;
-    let costo = 0;
+const supabaseUrl = "https://vdoclvetytngpkpeewhd.supabase.co";
+const supabaseKey = "sb_publishable_cZobpH9oKiu-4LfT4Qt1pg_X_i5mZS1";
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-    if (servicio === "aceite") {
-        costo = 500;
-    } else if (servicio === "frenos") {
-        costo = 1200;
-    } else if (servicio === "motor") {
-        costo = 3000;
-    } else {
-        document.getElementById("resultado").innerHTML = "Selecciona un servicio válido";
-        return;
+const formulario = document.getElementById("formCita");
+const mensaje = document.getElementById("mensaje");
+
+formulario.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    mensaje.textContent = "Guardando cita...";
+
+    const nombre = document.getElementById("nombre").value;
+    const telefono = document.getElementById("telefono").value;
+    const fecha = document.getElementById("fecha").value;
+
+    try {
+        // 1. Guardar cliente en columnas limpias
+        const { data: cliente, error: errorCliente } = await supabase
+            .from("clientes")
+            .insert([{ nombre, telefono }])
+            .select();
+
+        if (errorCliente) throw errorCliente;
+        const idCliente = cliente[0].id_cliente;
+
+        // 2. Guardar cita
+        const { error: errorCita } = await supabase
+            .from("citas")
+            .insert([{
+                id_cliente: idCliente,
+                fecha,
+                estado: "Pendiente"
+            }]);
+
+        if (errorCita) throw errorCita;
+
+        // 3. Enviar correo
+        await fetch(`${supabaseUrl}/functions/v1/smart-api`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${supabaseKey}`,
+                "apikey": supabaseKey
+            },
+            body: JSON.stringify({ nombre, telefono, fecha })
+        });
+
+        mensaje.textContent = "Cita registrada y correo enviado ✔";
+        formulario.reset();
+
+    } catch (error) {
+        console.error(error);
+        mensaje.textContent = "Error al registrar la cita.";
     }
-
-    document.getElementById("resultado").innerHTML = "Costo estimado: $" + costo;
-}
+});
 </script>
-
 </body>
 </html>
